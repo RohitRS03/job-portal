@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+  <!-- Sidebar Navigation -->
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group shadow-sm">
+        <a href="{{ url_for('dashboard') }}" class="list-group-item list-group-item-action">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <a href="{{ url_for('job_new') }}" class="list-group-item list-group-item-action">
+          <i class="bi bi-plus-circle"></i> Post Job
+        </a>
+        <a href="{{ url_for('employer_jobs') }}" class="list-group-item list-group-item-action active">
+          <i class="bi bi-briefcase"></i> My Jobs
+        </a>
+        <a href="{{ url_for('employer_applications') }}" class="list-group-item list-group-item-action">
+          <i class="bi bi-person-lines-fill"></i> Applications
+        </a>
+        <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action">
+          <i class="bi bi-box-arrow-right"></i> Sign Out
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9">
+
+      <!-- Welcome Banner -->
+      <div class="bg-light p-4 rounded shadow-sm mb-4">
+        <h3 class="mb-1">My Jobs</h3>
+        <p class="text-muted">Here are all the jobs you’ve posted</p>
+      </div>
+
+      <!-- Job Listings -->
+      <div class="row">
+        {% for job in jobs %}
+          <div class="col-md-6 mb-3">
+            <div class="card p-3 shadow-sm">
+              <h5>{{ job.title }}</h5>
+              <p class="text-muted">{{ job.location or "N/A" }} • {{ job.job_type or "N/A" }}</p>
+              <p>{{ job.description[:140] }}{% if job.description|length > 140 %}...{% endif %}</p>
+              <p><strong>Applications:</strong> {{ job.applications|length }}</p>
+              <div class="d-flex gap-2">
+                <a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn btn-outline-primary btn-sm">View</a>
+                <a href="{{ url_for('job_edit', job_id=job.id) }}" class="btn btn-outline-secondary btn-sm">Edit</a>
+                <form method="post" action="{{ url_for('job_delete', job_id=job.id) }}">
+                  <button class="btn btn-outline-danger btn-sm">Delete</button>
+                </form>
+                <a href="{{ url_for('employer_applications') }}" class="btn btn-outline-info btn-sm">
+                  View Applications
+                </a>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <p>You haven’t posted any jobs yet. <a href="{{ url_for('job_new') }}">Post one now!</a></p>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

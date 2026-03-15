@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5" style="max-width: 900px;">
+  <h2 class="fw-bold text-dark mb-5 text-center">💼 Latest Jobs</h2>
+  <div class="row g-4">
+    {% for job in jobs %}
+      <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="fw-bold">{{ job.title }}</h5>
+            <p class="text-muted mb-1">{{ job.company }} • {{ job.location }}</p>
+            <p>{{ job.summary }}</p>
+            <a href="{{ url_for('job_detail1', job_id=job.id) }}" class="btn btn-outline-primary btn-sm">
+              View Details <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-center text-muted">No jobs available.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,430 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+
+      <!-- Profile Header -->
+      <div class="text-center mb-3">
+        <h3 class="fw-bold text-dark">
+          <i class="bi bi-person-circle me-2"></i> Profile Settings
+        </h3>
+        <p class="text-muted"><b>Manage your details in organized sections</b></p>
+      </div>
+
+      <!-- Section Cards -->
+      <div class="row g-4 text-center">
+        <!-- Personal -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm square-card" data-bs-toggle="collapse" data-bs-target="#personal">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+              <i class="bi bi-person-lines-fill display-4 text-primary mb-3"></i>
+              <h5 class="fw-bold">Personal</h5>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm square-card" data-bs-toggle="collapse" data-bs-target="#education">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+              <i class="bi bi-mortarboard-fill display-4 text-success mb-3"></i>
+              <h5 class="fw-bold">Education</h5>
+            </div>
+          </div>
+        </div>
+
+        <!-- Professional -->
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm square-card" data-bs-toggle="collapse" data-bs-target="#professional">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center">
+              <i class="bi bi-briefcase-fill display-4 text-info mb-3"></i>
+              <h5 class="fw-bold">Professional</h5>
+            </div>
+          </div>
+        </div>
+
+      
+<!-- Documents -->
+<div class="col-md-4">
+  <div class="card h-100 shadow-sm square-card" data-bs-toggle="collapse" data-bs-target="#documents">
+    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+      <i class="bi bi-folder-fill display-4 text-secondary mb-3"></i>
+      <h5 class="fw-bold">Documents</h5>
+      {% if user.other_docs_path %}
+        <span class="badge bg-success mt-2">Uploaded</span>
+      {% else %}
+        <span class="badge bg-danger mt-2">Not Uploaded</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Resume (Seeker only) -->
+{% if current_user.role == "seeker" %}
+<div class="col-md-4">
+  <div class="card h-100 shadow-sm square-card" data-bs-toggle="collapse" data-bs-target="#resume">
+    <div class="card-body d-flex flex-column align-items-center justify-content-center">
+      <i class="bi bi-file-earmark-person display-4 text-dark mb-3"></i>
+      <h5 class="fw-bold">Resume</h5>
+      {% if user.resume_path %}
+        <span class="badge bg-success mt-2">Uploaded</span>
+      {% else %}
+        <span class="badge bg-danger mt-2">Not Uploaded</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+
+
+
+<!-- Collapsible Forms -->
+ <form method="post" enctype="multipart/form-data" class="mt-5">
+  {{ form.hidden_tag() }}
+
+  <div class="accordion" id="profileAccordion">
+    
+<!-- Personal -->
+<div id="personal" class="collapse" data-bs-parent="#profileAccordion">
+  <div class="card shadow-lg border-0 mb-4 rounded-3">
+    <div class="card-header text-white fw-bold"
+         style="background: linear-gradient(135deg,#6a11cb,#2575fc);">
+      <i class="bi bi-person-fill me-2"></i> Personal Information
+    </div>
+    <div class="card-body p-4">
+      <div class="row g-4">
+
+        <!-- Name -->
+        <div class="col-md-6">
+          <form method="post">
+            {{ form.hidden_tag() }}
+            <label class="form-label fw-semibold">
+              <i class="bi bi-person-circle me-2 text-primary"></i> {{ form.name.label.text }}
+            </label>
+            {{ form.name(class="form-control form-control-lg border-primary shadow-sm rounded-3") }}
+            <button type="submit" name="save_field" value="name"
+                    class="btn btn-sm btn-gradient mt-2">
+              <i class="bi bi-save me-1"></i> Save Name
+            </button>
+          </form>
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-6">
+          <form method="post">
+            {{ form.hidden_tag() }}
+            <label class="form-label fw-semibold">
+              <i class="bi bi-telephone-fill me-2 text-success"></i> {{ form.phone.label.text }}
+            </label>
+            {{ form.phone(class="form-control form-control-lg border-success shadow-sm rounded-3") }}
+            <button type="submit" name="save_field" value="phone"
+                    class="btn btn-sm btn-gradient mt-2">
+              <i class="bi bi-save me-1"></i> Save Phone
+            </button>
+          </form>
+        </div>
+
+        <!-- Birthday -->
+        <div class="col-md-6">
+          <form method="post">
+            {{ form.hidden_tag() }}
+            <label class="form-label fw-semibold">
+              <i class="bi bi-calendar-heart me-2 text-warning"></i> {{ form.birthday.label.text }}
+            </label>
+            {{ form.birthday(class="form-control form-control-lg border-warning shadow-sm rounded-3", type="date") }}
+            <button type="submit" name="save_field" value="birthday"
+                    class="btn btn-sm btn-gradient mt-2">
+              <i class="bi bi-save me-1"></i> Save Birthday
+            </button>
+          </form>
+        </div>
+
+        <!-- Nationality -->
+        <div class="col-md-6">
+          <form method="post">
+            {{ form.hidden_tag() }}
+            <label class="form-label fw-semibold">
+              <i class="bi bi-flag-fill me-2 text-danger"></i> {{ form.nationality.label.text }}
+            </label>
+            {{ form.nationality(class="form-control form-control-lg border-danger shadow-sm rounded-3") }}
+            <button type="submit" name="save_field" value="nationality"
+                    class="btn btn-sm btn-gradient mt-2">
+              <i class="bi bi-save me-1"></i> Save Nationality
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Education -->
+<div id="education" class="collapse" data-bs-parent="#profileAccordion">
+  <div class="card shadow-lg border-0 mb-4 rounded-3">
+    <!-- Header -->
+    <div class="card-header text-white fw-bold"
+         style="background: linear-gradient(135deg,#6a11cb,#2575fc); border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
+      <i class="bi bi-book-fill me-2"></i> Education
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4">
+      <div class="row g-4">
+        <!-- Degree -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-mortarboard-fill me-2 text-primary"></i> Degree
+          </label>
+          {{ form.degree(class="form-control form-control-lg border-primary shadow-sm rounded-3") }}
+        </div>
+
+        <!-- Institution -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-building me-2 text-success"></i> Institution
+          </label>
+          {{ form.institution(class="form-control form-control-lg border-success shadow-sm rounded-3") }}
+        </div>
+
+        <!-- Graduation Year -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-calendar-check me-2 text-warning"></i> Graduation Year
+          </label>
+          {{ form.graduation_year(class="form-control form-control-lg border-warning shadow-sm rounded-3", type="number") }}
+        </div>
+
+        <!-- Major -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-journal-text me-2 text-danger"></i> Major
+          </label>
+          {{ form.major(class="form-control form-control-lg border-danger shadow-sm rounded-3") }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Professional -->
+<div id="professional" class="collapse mb-4" data-bs-parent="#profileAccordion">
+  <div class="card shadow-lg border-0 rounded-3">
+    <!-- Header -->
+    <div class="card-header text-white fw-bold"
+         style="background: linear-gradient(135deg,#ff512f,#dd2476); border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
+      <i class="bi bi-briefcase-fill me-2"></i> Professional Information
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4">
+      <div class="row g-4">
+        <!-- Current Position -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-person-workspace me-2 text-primary"></i> {{ form.current_position.label.text }}
+          </label>
+          {{ form.current_position(class="form-control form-control-lg border-primary shadow-sm rounded-3") }}
+        </div>
+
+        <!-- Company -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-building me-2 text-success"></i> {{ form.company.label.text }}
+          </label>
+          {{ form.company(class="form-control form-control-lg border-success shadow-sm rounded-3") }}
+        </div>
+
+        <!-- Years of Experience -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-hourglass-split me-2 text-warning"></i> {{ form.experience_years.label.text }}
+          </label>
+          {{ form.experience_years(class="form-control form-control-lg border-warning shadow-sm rounded-3", type="number") }}
+        </div>
+
+        <!-- Skills -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-lightbulb-fill me-2 text-danger"></i> {{ form.skills.label.text }}
+          </label>
+          {{ form.skills(class="form-control form-control-lg border-danger shadow-sm rounded-3") }}
+        </div>
+
+        {% if current_user.role == "employer" %}
+        <!-- Employer-only fields -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-building-fill me-2 text-primary"></i> {{ form.company_name.label.text }}
+          </label>
+          {{ form.company_name(class="form-control form-control-lg border-primary shadow-sm rounded-3") }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-telephone-fill me-2 text-success"></i> {{ form.company_contact.label.text }}
+          </label>
+          {{ form.company_contact(class="form-control form-control-lg border-success shadow-sm rounded-3") }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-person-badge-fill me-2 text-warning"></i> {{ form.employee_id.label.text }}
+          </label>
+          {{ form.employee_id(class="form-control form-control-lg border-warning shadow-sm rounded-3") }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-diagram-3-fill me-2 text-danger"></i> {{ form.department.label.text }}
+          </label>
+          {{ form.department(class="form-control form-control-lg border-danger shadow-sm rounded-3") }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-person-workspace me-2 text-primary"></i> {{ form.designation.label.text }}
+          </label>
+          {{ form.designation(class="form-control form-control-lg border-primary shadow-sm rounded-3") }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-people-fill me-2 text-success"></i> {{ form.reporting_to.label.text }}
+          </label>
+          {{ form.reporting_to(class="form-control form-control-lg border-success shadow-sm rounded-3") }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-calendar-check-fill me-2 text-warning"></i> {{ form.joined_on.label.text }}
+          </label>
+          {{ form.joined_on(class="form-control form-control-lg border-warning shadow-sm rounded-3", type="date") }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-toggle-on me-2 text-danger"></i> {{ form.status.label.text }}
+          </label>
+          {{ form.status(class="form-control form-control-lg border-danger shadow-sm rounded-3") }}
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-clock-fill me-2 text-primary"></i> {{ form.notice_period.label.text }}
+          </label>
+          {{ form.notice_period(class="form-control form-control-lg border-primary shadow-sm rounded-3") }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Documents -->
+<!-- Documents -->
+<div id="documents" class="collapse mb-4" data-bs-parent="#profileAccordion">
+  <div class="card shadow-lg border-0 rounded-3">
+    <!-- Header -->
+    <div class="card-header text-white fw-bold"
+         style="background: linear-gradient(135deg,#00c6ff,#0072ff); border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
+      <i class="bi bi-folder-fill me-2"></i> Documents
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4">
+      <!-- Upload Field -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">
+          <i class="bi bi-upload me-2 text-primary"></i> {{ form.other_docs.label.text }}
+        </label>
+        <div class="upload-box border border-primary rounded-3 p-4 text-center shadow-sm">
+          <i class="bi bi-cloud-arrow-up display-6 text-primary"></i>
+          <p class="mt-2 mb-3 text-muted">Drag & drop your document here or click to browse</p>
+          {{ form.other_docs(class="form-control form-control-lg border-primary shadow-sm rounded-3") }}
+        </div>
+      </div>
+
+      <!-- Current Document Preview -->
+      {% if user.other_docs_path %}
+      <div class="mt-4 p-3 bg-light rounded-3 shadow-sm">
+        <i class="bi bi-file-earmark-text me-2 text-secondary"></i>
+        <span class="fw-semibold">Current Document:</span>
+        <a href="{{ url_for('get_document', filename=user.other_docs_path) }}" target="_blank"
+           class="btn btn-sm btn-outline-primary ms-2">
+          <i class="bi bi-eye"></i> View Document
+        </a>
+      </div>
+      {% endif %}
+     </div>
+  </div>
+</div>
+
+<!-- Resume -->
+<div id="resume" class="collapse mb-4" data-bs-parent="#profileAccordion">
+  <div class="card shadow-lg border-0 rounded-3">
+    <!-- Header -->
+    <div class="card-header text-white fw-bold"
+         style="background: linear-gradient(135deg,#f7971e,#ffd200); border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
+      <i class="bi bi-file-earmark-person-fill me-2"></i> Resume
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4">
+      <!-- Upload Field -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">
+          <i class="bi bi-upload me-2 text-primary"></i> {{ form.resume.label.text }}
+        </label>
+        <div class="upload-box border border-warning rounded-3 p-4 text-center shadow-sm">
+          <i class="bi bi-cloud-arrow-up display-6 text-warning"></i>
+          <p class="mt-2 mb-3 text-muted">Drag & drop your resume here or click to browse</p>
+          {{ form.resume(class="form-control form-control-lg border-warning shadow-sm rounded-3") }}
+        </div>
+      </div>
+
+      <!-- Current Resume Preview -->
+      {% if user.resume_path %}
+      <div class="mt-4 p-3 bg-light rounded-3 shadow-sm">
+        <i class="bi bi-file-earmark-text me-2 text-secondary"></i>
+        <span class="fw-semibold">Current Resume:</span>
+        <a href="{{ url_for('get_resume', filename=user.resume_path) }}" target="_blank"
+           class="btn btn-sm btn-outline-warning ms-2">
+          <i class="bi bi-eye"></i> View Resume
+        </a>
+      </div>
+       {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Global Save Button -->
+  <div class="mt-4 text-center mb-5">
+    <button type="submit" class="btn btn-gradient fw-bold py-2 px-5">
+      <i class="bi bi-save me-2"></i> Save All Changes
+    </button>
+  </div>
+</form>
+
+
+
+
+<style>
+  .square-card {
+    min-height: 180px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+  .square-card:hover {
+    transform: scale(1.05);
+  }
+</style>
+{% endblock %}

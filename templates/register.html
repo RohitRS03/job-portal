@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5 d-flex justify-content-center">
+  <div class="card shadow-lg p-3" style="width: 500px; border-radius: 8px;">
+    <!-- Header -->
+    <div class="text-center mb-2">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMKA-aOESvH4UjAkMvNSvbWGYxYPEKy-Co7w&s"
+           alt="Job Portal Logo"
+           height="60"
+           class="mb-2">
+      <h4 class="fw-bold text-success">Create Your Account</h4>
+      <p class="text-muted">Choose your role to get started</p>
+    </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Tabs for Seeker / Employer -->
+    <ul class="nav nav-tabs mb-3" id="registerTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="seeker-tab" data-bs-toggle="tab" data-bs-target="#seeker" type="button" role="tab">
+          <i class="bi bi-person"></i> Job Seeker
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="employer-tab" data-bs-toggle="tab" data-bs-target="#employer" type="button" role="tab">
+          <i class="bi bi-building"></i> Employer
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="registerTabsContent">
+      <!-- Seeker Registration -->
+      <div class="tab-pane fade show active" id="seeker" role="tabpanel">
+        <form method="POST" action="{{ url_for('register') }}">
+          {{ form.hidden_tag() }}
+
+          <!-- Hidden role field -->
+          <input type="hidden" name="role" value="seeker">
+
+          <!-- Name -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-person"></i> Full Name</label>
+            {{ form.name(class="form-control", placeholder="Your full name") }}
+          </div>
+
+          <!-- Email -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-envelope"></i> Email</label>
+            {{ form.email(class="form-control", placeholder="Enter your email") }}
+          </div>
+
+          <!-- Password -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-lock"></i> Password</label>
+            {{ form.password(class="form-control", placeholder="Enter a strong password", id="password_seeker") }}
+            <small class="form-text text-muted">At least 6 characters</small>
+            <div id="strengthMessageSeeker" class="small mt-1"></div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-lock-fill"></i> Confirm Password</label>
+            {{ form.confirm_password(class="form-control", placeholder="Re-enter your password") }}
+          </div>
+
+          <!-- Skills -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-mortarboard"></i> Skills</label>
+            {{ form.skills(class="form-control", placeholder="e.g. Python, Marketing") }}
+          </div>
+
+          <button type="submit" class="btn btn-success w-100 fw-semibold">
+            <i class="bi bi-person-plus"></i> Register as Seeker
+          </button>
+        </form>
+      </div>
+
+      <!-- Employer Registration -->
+      <div class="tab-pane fade" id="employer" role="tabpanel">
+        <form method="POST" action="{{ url_for('register') }}">
+          {{ form.hidden_tag() }}
+
+          <!-- Hidden role field -->
+          <input type="hidden" name="role" value="employer">
+
+          <!-- Name -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-person"></i> Full Name</label>
+            {{ form.name(class="form-control", placeholder="Your full name") }}
+          </div>
+
+          <!-- Email -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-envelope"></i> Email</label>
+            {{ form.email(class="form-control", placeholder="Enter your email") }}
+          </div>
+
+          <!-- Password -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-lock"></i> Password</label>
+            {{ form.password(class="form-control", placeholder="Enter a strong password", id="password_employer") }}
+            <small class="form-text text-muted">At least 6 characters</small>
+            <div id="strengthMessageEmployer" class="small mt-1"></div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-lock-fill"></i> Confirm Password</label>
+            {{ form.confirm_password(class="form-control", placeholder="Re-enter your password") }}
+          </div>
+
+          <!-- Company -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-building"></i> Company</label>
+            {{ form.company(class="form-control", placeholder="Your company name") }}
+          </div>
+
+          <!-- Industry -->
+          <div class="mb-2">
+            <label class="form-label"><i class="bi bi-briefcase"></i> Industry</label>
+            {{ form.industry(class="form-control", placeholder="e.g. IT, Healthcare") }}
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 fw-semibold">
+            <i class="bi bi-building-add"></i> Register as Employer
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Login link -->
+    <div class="text-center mt-2">
+      <p class="small text-muted">
+        Already have an account?
+        <a href="{{ url_for('login') }}" class="fw-semibold text-success">Login Here</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Password strength scripts -->
+<script>
+  function checkStrength(inputId, messageId) {
+    const password = document.getElementById(inputId);
+    const strengthMessage = document.getElementById(messageId);
+
+    password.addEventListener('input', () => {
+      const val = password.value;
+      let strength = '';
+      if (val.length < 6) {
+        strength = '<span class="text-danger">Weak</span>';
+      } else if (val.match(/[A-Z]/) && val.match(/[0-9]/)) {
+        strength = '<span class="text-success">Strong</span>';
+      } else {
+        strength = '<span class="text-warning">Medium</span>';
+      }
+      strengthMessage.innerHTML = 'Password strength: ' + strength;
+    });
+  }
+
+  checkStrength('password_seeker', 'strengthMessageSeeker');
+  checkStrength('password_employer', 'strengthMessageEmployer');
+</script>
+{% endblock %}

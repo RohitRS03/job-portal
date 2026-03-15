@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Full viewport flex wrapper -->
+<div class="d-flex flex-column justify-content-center align-items-center min-vh-200 text-center">
+
+  <!-- Hero Section -->
+  <div class="hero p-5 rounded shadow-lg mb-5 mx-auto" 
+       style="background: linear-gradient(135deg, #004e92, #000428); color:#fff; max-width:800px; width:100%;">
+    <h1 class="fw-bold mb-3">Welcome to the Job Portal</h1>
+    <p class="lead mb-4">Discover thousands of jobs and apply in minutes.</p>
+    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">Login to Start</a>
+  </div>
+
+  <!-- Find Your Next Opportunity -->
+  <h4 class="fw-bold mb-4">Find Your Next Opportunity</h4>
+
+  <!-- Fixed row of cards -->
+  <div class="d-flex justify-content-center gap-4" style="max-width: 1000px;">
+
+    <div class="card p-4 shadow-sm border-0 text-center flex-fill" style="min-width:220px;">
+      <h5 class="fw-bold text-primary">💻 IT & Software</h5>
+      <p class="text-muted mb-0">Developer, Engineer, Analyst</p>
+    </div>
+
+    <div class="card p-4 shadow-sm border-0 text-center flex-fill" style="min-width:220px;">
+      <h5 class="fw-bold text-success">📈 Business</h5>
+      <p class="text-muted mb-0">Manager, Consultant, HR</p>
+    </div>
+
+    <div class="card p-4 shadow-sm border-0 text-center flex-fill" style="min-width:220px;">
+      <h5 class="fw-bold text-warning">🎨 Design</h5>
+      <p class="text-muted mb-0">UI/UX, Graphic, Product</p>
+    </div>
+
+    <div class="card p-4 shadow-sm border-0 text-center flex-fill" style="min-width:220px;">
+      <h5 class="fw-bold text-danger">⚕️ Healthcare</h5>
+      <p class="text-muted mb-0">Doctor, Nurse, Therapist</p>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

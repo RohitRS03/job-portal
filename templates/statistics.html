@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5" style="max-width: 900px;">
+
+  <!-- Page Title -->
+  <h2 class="fw-bold text-dark mb-5 text-center">📊 Statistics Dashboard</h2>
+
+  <!-- Top Stats Cards -->
+  <div class="row g-4 mb-5">
+    <!-- ... your stat cards unchanged ... -->
+  </div>
+
+  <!-- Charts Side by Side -->
+  <div class="row g-4 mb-5">
+    <!-- Line Chart -->
+    <div class="col-md-7">
+      <div class="card shadow-sm h-100">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-4"><i class="bi bi-bar-chart-line"></i> Weekly Trends</h5>
+          <div style="height: 300px;">
+            <canvas id="statsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doughnut Chart -->
+    <div class="col-md-5">
+      <div class="card shadow-sm h-100">
+        <div class="card-body p-4 text-center">
+          <h5 class="fw-bold mb-4"><i class="bi bi-pie-chart-fill"></i> Distribution</h5>
+          <div style="height: 250px;">
+            <canvas id="statsPie"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Line Chart
+  const ctxLine = document.getElementById('statsChart').getContext('2d');
+  new Chart(ctxLine, {
+    type: 'line',
+    data: {
+      labels: {{ chart_labels|tojson|safe }},
+      datasets: [
+        { label: 'Applications', data: {{ chart_applications|tojson|safe }},
+          borderColor: '#6a11cb', backgroundColor: 'rgba(106,17,203,0.2)', tension: 0.4, fill: true },
+        { label: 'Interviews', data: {{ chart_interviews|tojson|safe }},
+          borderColor: '#00b09b', backgroundColor: 'rgba(0,176,155,0.2)', tension: 0.4, fill: true },
+        { label: 'Rejected', data: {{ chart_rejected|tojson|safe }},
+          borderColor: '#ff416c', backgroundColor: 'rgba(255,65,108,0.2)', tension: 0.4, fill: true }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+
+  // Doughnut Chart
+  const ctxPie = document.getElementById('statsPie').getContext('2d');
+  new Chart(ctxPie, {
+    type: 'doughnut',
+    data: {
+      labels: ['Applications', 'Interviews', 'Rejected'],
+      datasets: [{
+        data: [{{ stats.applications }}, {{ stats.interviews }}, {{ stats.rejected }}],
+        backgroundColor: ['#6a11cb', '#00b09b', '#ff416c'],
+        borderWidth: 2
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+</script>
+{% endblock %}

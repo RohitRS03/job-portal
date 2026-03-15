@@ -1,0 +1,8 @@
+Flask==3.0.0
+Flask_SQLAlchemy==3.1.1
+Flask_WTF==1.2.1
+WTForms==3.1.2
+email_validator==2.2.0
+Flask_Login==0.6.3
+Flask_Bcrypt==1.0.1
+python-dotenv==1.0.1

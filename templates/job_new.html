@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5" style="max-width: 800px;">
+
+  <!-- Page Title -->
+  <div class="text-center mb-5">
+    <h2 class="fw-bold text-dark">📝 Post a New Job</h2>
+    <p class="text-muted">Fill out the details below to create a job listing</p>
+  </div>
+
+  <!-- Job Form -->
+  <div class="card shadow-sm">
+    <div class="card-body p-4" >
+      <form method="POST" action="{{ url_for('job_new') }}">
+        
+        <!-- Title -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Job Title</label>
+          <input type="text" name="title" class="form-control" placeholder="e.g. Python Developer" required>
+        </div>
+
+        <!-- Company -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Company</label>
+          <input type="text" name="company" class="form-control" placeholder="Company name" required>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Location</label>
+          <input type="text" name="location" class="form-control" placeholder="City, State" required>
+        </div>
+
+        <!-- Job Type -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Job Type</label>
+          <select name="job_type" class="form-select" required>
+            <option value="">Select type</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Internship">Internship</option>
+          </select>
+        </div>
+
+        <!-- Work Mode -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Work Mode</label>
+          <select name="mode" class="form-select" required>
+            <option value="">Select mode</option>
+            <option value="On-site">On-site</option>
+            <option value="Remote">Remote</option>
+            <option value="Hybrid">Hybrid</option>
+          </select>
+        </div>
+
+        <!-- Salary -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Salary Min</label>
+            <input type="number" name="salary_min" class="form-control" placeholder="Min" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Salary Max</label>
+            <input type="number" name="salary_max" class="form-control" placeholder="Max" required>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Summary</label>
+          <input type="text" name="summary" class="form-control" placeholder="Short summary (1-2 lines)" required>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label fw-bold">Detailed Description</label>
+          <textarea name="description" class="form-control" rows="5" placeholder="Full job description..." required></textarea>
+        </div>
+
+        <!-- Featured -->
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" name="is_featured" value="true">
+          <label class="form-check-label fw-bold">Mark as Featured Job</label>
+        </div>
+
+        <!-- Submit -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary btn-lg fw-bold px-5">
+            <i class="bi bi-check-circle"></i> Create Job
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

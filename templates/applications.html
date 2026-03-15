@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Full width flex wrapper with spacing -->
+<div class="w-100 d-flex justify-content-center py-5">
+
+  <!-- Centered column -->
+  <div class="w-100 mx-auto" style="max-width: 600px;">
+
+    <!-- Hero Banner -->
+    <div class="card shadow-lg border-0 mb-4 text-center p-3 hero-banner" 
+         style="background: linear-gradient(135deg, #8b68e3, #1a2268);">
+      <h2 class="fw-bold text-light mb-2">
+        <i class="bi bi-briefcase-fill"></i> Apply for {{ job.title }}
+      </h2>
+      <p class="text-light mb-0 fs-5">
+        <i class="bi bi-geo-alt-fill"></i> {{ job.location or "N/A" }} 
+        • <i class="bi bi-clock-fill"></i> {{ job.job_type or "N/A" }}
+      </p>
+    </div>
+
+    <!-- Application Form Card -->
+    <div class="card shadow-lg border-0 p-4 rounded-3" 
+         style="background: linear-gradient(135deg, #fdfcfb, #e2d1c3);">
+      
+      <h4 class="fw-bold mb-4 text-primary d-flex align-items-center">
+        <i class="bi bi-pencil-square me-2"></i> Submit Your Application
+      </h4>
+
+      <form method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <!-- Cover Letter -->
+        <div class="mb-4">
+          {{ form.cover_letter.label(class="form-label fw-semibold text-dark") }}
+          {{ form.cover_letter(class="form-control rounded-3 shadow-sm border-primary", rows=6, placeholder="Write a compelling cover letter...") }}
+          <small class="text-muted">
+            <i class="bi bi-lightbulb"></i> Tip: Highlight your skills and why you’re a great fit.
+          </small>
+        </div>
+
+        <!-- Resume Upload -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold text-dark">
+            <i class="bi bi-file-earmark-arrow-up me-1"></i> Upload Resume
+          </label>
+          <input type="file" class="form-control shadow-sm rounded-3 border-primary" name="resume" accept=".pdf,.doc,.docx">
+          <small class="text-muted">
+            <i class="bi bi-info-circle"></i> Accepted formats: PDF, DOC, DOCX
+          </small>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold text-dark">
+            <i class="bi bi-bar-chart-steps me-1"></i> Application Progress
+          </label>
+          <div class="progress" style="height: 24px; border-radius: 12px;">
+            <div class="progress-bar bg-success fw-bold" role="progressbar" style="width: 50%;">
+              Step 2 of 3
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary fw-bold py-2 fs-5">
+            <i class="bi bi-send-fill me-1"></i> Submit Application
+          </button>
+        </div>
+      </form>
+
+      <!-- Back Link -->
+      <div class="mt-4 text-center">
+        <a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn btn-outline-secondary btn-sm px-3">
+          <i class="bi bi-arrow-left"></i> Back to Job Details
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

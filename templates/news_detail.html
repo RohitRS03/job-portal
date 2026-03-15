@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container py-5" style="max-width: 800px;">
+  <div class="card shadow-sm">
+    {% if news_item.image_url %}
+      <img src="{{ news_item.image_url }}" class="card-img-top" alt="News image">
+    {% endif %}
+    <div class="card-body">
+      <h3 class="fw-bold">{{ news_item.title }}</h3>
+      <p class="text-muted">
+        {{ news_item.source }} • {{ news_item.published_at }}
+      </p>
+      {% if news_item.category %}
+        <span class="badge bg-primary mb-3">{{ news_item.category }}</span>
+      {% endif %}
+
+      <!-- New fields -->
+      <p><strong>Description:</strong> {{ news_item.description }}</p>
+      <p><strong>Location:</strong> {{ news_item.location }}</p>
+
+      <p class="lead">{{ news_item.summary }}</p>
+      <hr>
+      <p>{{ news_item.details }}</p>
+      <a href="{{ url_for('news') }}" class="btn btn-secondary mt-3">
+        ← Back to News
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

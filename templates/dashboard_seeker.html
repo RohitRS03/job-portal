@@ -1,0 +1,456 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row w-100 m-0 min-vh-100">
+
+  
+<!-- Sidebar -->
+<div class="col-md-2 p-0 d-flex flex-column min-vh-100 sidebar">
+
+  <!-- Navigation -->
+  <div class="list-group list-group-flush flex-grow-1 nav-section">
+    <a href="{{ url_for('dashboard') }}" 
+       class="list-group-item list-group-item-action border-0 text-light sidebar-link">
+      <i class="bi bi-speedometer2 me-2"></i> Dashboard
+    </a>
+    <a href="{{ url_for('find_jobs') }}" 
+       class="list-group-item list-group-item-action border-0 text-light sidebar-link">
+      <i class="bi bi-search me-2"></i> Search Job
+    </a>
+    <a href="{{ url_for('applied_jobs') }}" 
+       class="list-group-item list-group-item-action border-0 text-light sidebar-link">
+      <i class="bi bi-check2-circle me-2"></i> Applications
+    </a>
+    <a href="{{ url_for('messages') }}" 
+       class="list-group-item list-group-item-action border-0 text-light sidebar-link">
+      <i class="bi bi-chat-dots me-2"></i> Messages
+    </a>
+    <a href="{{ url_for('statistics') }}" 
+       class="list-group-item list-group-item-action border-0 text-light sidebar-link">
+      <i class="bi bi-bar-chart-line me-2"></i> Statistics
+    </a>
+    <a href="{{ url_for('news') }}" 
+       class="list-group-item list-group-item-action border-0 text-light sidebar-link">
+      <i class="bi bi-newspaper me-2"></i> News
+    </a>
+  </div>
+</div>
+
+<style>
+  /* Sidebar flush with navbar */
+  .sidebar {
+    background: linear-gradient(270deg, #000428, #083d6c, #0d6efd, #6610f2);
+    background-size: 800% 800%;
+    animation: gradientAnimation 15s ease infinite;
+    box-shadow: 4px 0 12px rgba(0,0,0,0.3);
+  }
+
+  @keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Add spacing between navbar and links */
+  .nav-section {
+    margin-top: 1.5rem; /* pushes links down inside sidebar */
+  }
+
+  .sidebar-link {
+    background: transparent;
+    padding: 0.9rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Pop-up effect on hover */
+  .sidebar-link:hover {
+    background: linear-gradient(45deg,#0d6efd,#6610f2);
+    color: #fff !important;
+    transform: translateX(8px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  }
+
+  .sidebar .list-group-item {
+    border: none;
+  }
+</style>
+
+
+
+
+
+
+
+
+  <!-- Main Content -->
+  <div class="col-md-10 p-4">
+
+    <!-- Top Metrics -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card text-center shadow-sm border-0 p-3"
+             style="background: linear-gradient(135deg,#6a11cb,#2575fc); color:#fff;">
+          <h6 class="mb-2">Interviews</h6>
+          <h4 class="fw-bold">{{ interviews|length }}</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center shadow-sm border-0 p-3"
+             style="background: linear-gradient(135deg,#6a11cb,#2575fc); color:#fff;">
+          <h6 class="mb-2">Applications</h6>
+          <h4 class="fw-bold">{{ applications|length }}</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center shadow-sm border-0 p-3"
+             style="background: linear-gradient(135deg,#6a11cb,#2575fc); color:#fff;">
+          <h6 class="mb-2">Profile Views</h6>
+          <h4 class="fw-bold">{{ profile_views }}</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center shadow-sm border-0 p-3"
+             style="background: linear-gradient(135deg,#6a11cb,#2575fc); color:#fff;">
+          <h6 class="mb-2">Unread</h6>
+          <h4 class="fw-bold">{{ unread_messages }}</h4>
+        </div>
+      </div>
+    </div>
+
+
+
+<!-- Profile Card -->
+<div class="card shadow-sm mb-4"
+     style="background: rgba(255,255,255,0.25); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255,255,255,0.3);">
+  <div class="card-body p-4">
+    <!-- Header -->
+    <div class="d-flex align-items-center mb-3">
+      <div>
+        <h5 class="fw-bold mb-1">{{ current_user.name }}</h5>
+        <span class="badge bg-secondary">{{ current_user.role|capitalize }}</span>
+      </div>
+    </div>
+
+    <!-- Skills Section -->
+    <h6 class="fw-semibold mb-3"><i class="bi bi-bar-chart-line me-2"></i> Skills Overview</h6>
+
+    <div class="mb-3">
+      <div class="d-flex justify-content-between">
+        <label class="fw-semibold">PHP</label>
+        <span class="badge bg-primary">70%</span>
+      </div>
+      <div class="progress">
+        <div class="progress-bar bg-primary" style="width:70%;"></div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <div class="d-flex justify-content-between">
+        <label class="fw-semibold">HTML</label>
+        <span class="badge bg-success">37%</span>
+      </div>
+      <div class="progress">
+        <div class="progress-bar bg-success" style="width:37%;"></div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <div class="d-flex justify-content-between">
+        <label class="fw-semibold">UI/UX</label>
+        <span class="badge bg-warning text-dark">50%</span>
+      </div>
+      <div class="progress">
+        <div class="progress-bar bg-warning text-dark" style="width:50%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Row: Recent Activity + Vacancy Stats -->
+<div class="row g-4 mb-4">
+
+  <!-- Recent Activity -->
+  <div class="col-md-6">
+    <div class="card shadow-sm glass-card h-100">
+      <div class="card-body p-4">
+        <h6 class="fw-bold mb-3">
+          <i class="bi bi-clock-history me-2 text-primary"></i> Recent Activity
+        </h6>
+        <ul class="list-group list-group-flush small">
+          {% for a in applications[:5] %}
+            <li class="list-group-item activity-item d-flex justify-content-between align-items-center">
+              <div>
+                <span class="badge bg-gradient-primary text-white me-2">
+                  <i class="bi bi-briefcase-fill"></i>
+                </span>
+                Applied for <strong>{{ a.job.title }}</strong> 
+                <span class="text-muted">at <em>{{ a.job.employer.company }}</em></span>
+              </div>
+              {% if a.created_at %}
+                <span class="date-badge">{{ a.created_at.strftime('%b %d, %Y') }}</span>
+              {% endif %}
+            </li>
+          {% else %}
+            <li class="list-group-item text-muted fst-italic">
+              <i class="bi bi-info-circle me-2"></i> No recent applications.
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vacancy Stats -->
+  <div class="col-md-6">
+    <div class="card shadow-sm glass-card h-100">
+      <div class="card-body p-4">
+        <h6 class="fw-bold mb-3 text-dark">
+          <i class="bi bi-bar-chart-line me-2 text-primary"></i> Vacancy Stats
+        </h6>
+        <div style="height:300px;">
+          <canvas id="vacancyChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .glass-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+    color: #212529; /* force dark text for readability */
+  }
+  .glass-card:hover {
+    transform: scale(1.02);
+  }
+  .list-group-item {
+    background: transparent;
+    border: none;
+    padding: 0.75rem 0;
+  }
+  .activity-item {
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .activity-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  }
+  .badge.bg-gradient-primary {
+    background: linear-gradient(45deg, #0d6efd, #6610f2);
+    border-radius: 50%;
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  .date-badge {
+    font-size: 0.75rem;
+    color: #212529;
+    background: rgba(255,255,255,0.6);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+</style>
+
+
+
+
+<!-- Recommended Jobs -->
+<div class="card shadow-lg mb-4 glass-card border-0">
+  <div class="card-body p-4">
+    <h5 class="fw-bold mb-4 d-flex align-items-center">
+      <i class="bi bi-stars me-2 text-primary fs-4"></i> Recommended Jobs
+    </h5>
+
+    <!-- Container for jobs -->
+    <div id="recommendedJobsContainer" class="row">
+      {% for job in recommended_jobs %}
+        <div class="col-md-6 mb-4">
+          <div class="card job-card h-100 border-0 shadow-sm">
+            <div class="card-body d-flex flex-column">
+              
+              <!-- Job Title -->
+              <h6 class="fw-bold mb-1">
+                <i class="bi bi-briefcase-fill text-primary me-2"></i> {{ job.title }}
+              </h6>
+              <p class="text-muted mb-2">
+                at <em>{{ job.company }}</em>
+              </p>
+
+              <!-- Location & Type -->
+              <p class="text-muted small mb-2">
+                <i class="bi bi-geo-alt me-1"></i> {{ job.location }} 
+                • <span class="badge bg-info text-dark">{{ job.job_type }}</span>
+              </p>
+
+              <!-- Skills -->
+              {% if job.skills %}
+                <div class="mt-2 mb-3">
+                  {% for skill in job.skills[:3] %}
+                    <span class="badge rounded-pill bg-light text-dark me-1">{{ skill }}</span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <!-- Action Button -->
+              <div class="mt-auto">
+                <a href="{{ url_for('job_detail', job_id=job.id) }}" 
+                   class="btn btn-gradient btn-sm w-100 fw-bold">
+                  <i class="bi bi-eye me-1"></i> View Details
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="col-12">
+          <p class="text-muted fst-italic">
+            <i class="bi bi-info-circle me-2"></i> No recommended jobs yet.
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Reload Button -->
+    <div class="text-center mt-3">
+      <button id="reloadJobs" class="btn btn-outline-primary">See More Recommended Jobs</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("reloadJobs").addEventListener("click", function() {
+    // Show loading state
+    document.getElementById("recommendedJobsContainer").innerHTML = 
+      '<div class="text-center w-100 py-4"><div class="spinner-border text-primary" role="status"></div></div>';
+
+    // Fetch new jobs
+    fetch("{{ url_for('recommended_jobs_partial') }}")
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("recommendedJobsContainer").innerHTML = html;
+      });
+  });
+</script>
+
+<style>
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+  }
+  .job-card {
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+  .btn-gradient {
+    background: linear-gradient(45deg, #0d6efd, #6610f2);
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(45deg, #6610f2, #0d6efd);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  }
+</style>
+
+{% endblock %}
+
+
+
+
+
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const ctx = document.getElementById('vacancyChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: {{ chart_labels|tojson|safe }},
+      datasets: [
+        { 
+          label:'Applications Sent', 
+          data:{{ chart_applications|tojson|safe }}, 
+          borderColor:'#0d6efd', 
+          backgroundColor:'rgba(13,110,253,0.2)', 
+          tension:0.4, 
+          fill:true 
+        },
+        { 
+          label:'Interviews', 
+          data:{{ chart_interviews|tojson|safe }}, 
+          borderColor:'#198754', 
+          backgroundColor:'rgba(25,135,84,0.2)', 
+          tension:0.4, 
+          fill:true 
+        },
+        { 
+          label:'Rejected', 
+          data:{{ chart_rejected|tojson|safe }}, 
+          borderColor:'#dc3545', 
+          backgroundColor:'rgba(220,53,69,0.2)', 
+          tension:0.4, 
+          fill:true 
+        }
+      ]
+    },
+    options: {
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{
+          position:'top',
+          labels:{
+            color:'#212529',   // dark legend text
+            font:{ size:14, weight:'bold' }
+          }
+        },
+        tooltip:{
+          backgroundColor:'rgba(0,0,0,0.85)',
+          titleColor:'#fff',
+          bodyColor:'#fff'
+        }
+      },
+      scales:{
+        x:{
+          ticks:{ color:'#212529', font:{ size:12 } }, // dark x-axis labels
+          grid:{ color:'rgba(0,0,0,0.05)' }
+        },
+        y:{
+          beginAtZero:true,
+          ticks:{ color:'#212529', font:{ size:12 } }, // dark y-axis labels
+          grid:{ color:'rgba(0,0,0,0.05)' }
+        }
+      }
+    }
+  });
+});
+</script>
+{% endblock %}

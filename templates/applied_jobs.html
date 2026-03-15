@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Applied Jobs</h2>
+  <ul class="list-group">
+    {% for app in applications %}
+      <li class="list-group-item">
+        <strong>{{ app.job.title }}</strong> at <em>{{ app.job.employer.company }}</em>
+        <span class="badge bg-secondary ms-2">{{ app.status|capitalize }}</span>
+      </li>
+    {% else %}
+      <li class="list-group-item">You haven’t applied to any jobs yet.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

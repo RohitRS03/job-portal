@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+
+      <!-- Applications Card -->
+      <div class="card p-4 shadow-lg border-0 rounded-4"
+           style="background: linear-gradient(135deg, #fff7ed, #fef3c7);">
+
+        <h3 class="fw-bold text-dark mb-4">
+          <i class="bi bi-briefcase-fill text-primary me-2"></i> Recent Applications
+        </h3>
+
+        {% if applications and applications|length > 0 %}
+          <ul class="list-group list-group-flush">
+            {% for app in applications %}
+              <li class="list-group-item border-0" style="background: transparent;">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <!-- Applicant basic info -->
+                    <strong class="text-primary">
+                      <i class="bi bi-person-fill"></i> {{ app.user.name }}
+                    </strong> 
+                    applied for <em>{{ app.job.title }}</em><br>
+                    <small class="text-muted">
+                      <i class="bi bi-calendar-event"></i> {{ app.created_at.strftime('%d %b %Y') }}
+                    </small>
+
+                    <!-- Contact info -->
+                    <p class="mt-2 mb-1">
+                      📧 {{ app.user.email }}  
+                      {% if app.user.phone %}
+                        | 📞 {{ app.user.phone }}
+                      {% endif %}
+                    </p>
+
+                    <!-- Cover letter -->
+                    {% if app.cover_letter %}
+                      <p class="fst-italic text-dark">
+                        "{{ app.cover_letter }}"
+                      </p>
+                    {% endif %}
+
+                    <!-- Resume download -->
+                    {% if app.resume_url %}
+                      <a href="{{ app.resume_url }}" class="btn btn-outline-success btn-sm mt-2" target="_blank">
+                        <i class="bi bi-file-earmark-text"></i> Download Resume
+                      </a>
+                    {% endif %}
+                  </div>
+
+                  <!-- Status Badge -->
+                  <div>
+                    {% if app.status == "Pending" %}
+                      <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> Pending</span>
+                    {% elif app.status == "Reviewed" %}
+                      <span class="badge bg-info text-dark"><i class="bi bi-eye"></i> Reviewed</span>
+                    {% elif app.status == "Accepted" %}
+                      <span class="badge bg-success"><i class="bi bi-check-circle"></i> Accepted</span>
+                    {% elif app.status == "Rejected" %}
+                      <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Rejected</span>
+                    {% else %}
+                      <span class="badge bg-secondary">Unknown</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">No applications yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
